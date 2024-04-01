@@ -1,0 +1,12 @@
+prefix=d:/PROJECTS/Movie-Recommendation-System/movrec/Library
+exec_prefix=d:/PROJECTS/Movie-Recommendation-System/movrec/Library
+libdir=d:/PROJECTS/Movie-Recommendation-System/movrec/Library/lib
+includedir=d:/PROJECTS/Movie-Recommendation-System/movrec/Library/include
+
+Name: libzmq
+Description: 0MQ c++ library
+Version: 4.3.5
+Libs: -L${libdir} -lzmq
+Libs.private: -lstdc++ 
+Requires.private: 
+Cflags: -I${includedir} 
