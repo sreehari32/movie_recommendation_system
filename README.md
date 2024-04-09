@@ -254,9 +254,13 @@
 
 
 5. # Movie Recommendation
-     A function called recommend is defined which will take movie_name as parameter
+     A function called recommend is defined which will take movie_name as parameter.
+   
      The index of the refered movie is identified.
+
      All the movies near to the this particular index is found and top 4 is selected.
+
+     Movie poster list is also made from the 'movie_poster_fetch' function
       
 
 
