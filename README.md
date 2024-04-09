@@ -114,6 +114,7 @@
     ```
 
    ### Among the crew members only director name is extracted
+   
 
     ```
     def fetch_director(obj):
