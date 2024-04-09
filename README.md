@@ -149,14 +149,14 @@
 
     ```
 
- ### All the values of genre, keywords, cast and crew and overview are concatenated to form a single list
+   ### All the values of genre, keywords, cast and crew and overview are concatenated to form a single list
 
     ```
     sorted_df['tag']= sorted_df['overview']+sorted_df['genres']+sorted_df['keywords']+sorted_df['cast']+sorted_df['crew']
 
     ```
 
-  ### A new dataframe is formed where only columns like id, original, title, and tag is present
+   ### A new dataframe is formed where only columns like id, original, title, and tag is present
 
     ```
     new_df=sorted_df[['id','original_title','tag']]
@@ -169,7 +169,7 @@
 
 
 
-###Converting lists in 'tag' to strings
+   ### Converting lists in 'tag' to strings
   
     ```
     new_df['tag']=new_df['tag'].apply(lambda x: " ".join(x))
@@ -184,10 +184,11 @@
 
 
 3. ## Natural Language Processing
+   nltk library is imported and PorterStemmer is used to find the root words
 
     ```
     import nltk
-    from nltk.stem.porter import PorterStemmer
+    from nltk.stem.porter import PorterStemmer 
     ps=PorterStemmer()
 
     def stem(text):
@@ -211,6 +212,8 @@
 
  ### Count Vectorisation
 
+    using count vectorisation, words are converted to vectors
+    
      ```
      from sklearn.feature_extraction.text import CountVectorizer
      cv=CountVectorizer(max_features=5000,stop_words='english')
@@ -219,6 +222,7 @@
      ```
 
   ### Checking the similarity
+      The proximity of the different vectors are measured using the cosine similarity function 
 
       ```
       
@@ -228,8 +232,49 @@
 
       ```
 
+4. # Poster fetching
+     A function is defined that will return the movie poster url when we pass the movie id. The images are extracted using TMDB  
+     API 
+
+      ```
+      import requests
+
+      def movie_poster_fetch(movie_id):
+
+          url = "https://api.themoviedb.org/3/movie/{}?api_key=2bb614d1e9ddaef999e871eb20076d6a".format(
+          movie_id )
+          data = requests.get(url)
+          data = data.json()
+          poster_path = data["poster_path"]
+    
+          full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+          return full_path
+
+      ```
 
 
+5. # Movie Recommendation
+     A function called recommend is defined which will take movie_name as parameter
+     The index of the refered movie is identified.
+     All the movies near to the this particular index is found and top 4 is selected.
+      
+
+
+      ```
+      movies_list=[]
+      poster_links_list=[]
+
+      def recommend(movie_name):
+    
+          movie_index=new_df[new_df['original_title']== movie_name].index[0]
+          distances=similarity[movie_index]
+          movies_list= sorted(list(enumerate(distances)),reverse= True, key= lambda X: X[1])[1:5]
+          for i in movies_list:
+               poster_links_list.append(movie_poster_fetch(new_df.loc[i[0],'id']))   
+    
+           return movies_list, poster_links_list
+
+      ```
 
 
 
